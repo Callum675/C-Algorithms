@@ -1,1 +1,1 @@
-# Various Algorithms program in C
+# Various Algorithms programmed in C
