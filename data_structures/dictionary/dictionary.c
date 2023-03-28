@@ -1,48 +1,43 @@
-/*C Dictionary*/
-#include <stdio.h>
+#include "dictionary.h"
 #include <string.h>
 
-// Define the struct for the dictionary entry
-struct dictionary
+int lookup_word(struct dictionary *dict, int num_entries, char *word)
 {
-  char word[50];
-  char definition[200];
-};
-
-int main()
-{
-  // Create an array of dictionary entries
-  struct dictionary dict[100];
-
-  // Add some entries to the dictionary
-  strcpy(dict[0].word, "apple");
-  strcpy(dict[0].definition, "a round fruit with red or green skin and a white flesh");
-
-  strcpy(dict[1].word, "banana");
-  strcpy(dict[1].definition, "a long curved fruit with a yellow skin");
-
-  strcpy(dict[2].word, "cherry");
-  strcpy(dict[2].definition, "a small round fruit with a red or black skin and a stone in the middle");
-
-  // Look up a word in the dictionary
-  char word_to_lookup[50];
-  printf("Enter a word to look up: ");
-  scanf("%s", word_to_lookup);
-
   int i;
-  for (i = 0; i < 100; i++)
+  for (i = 0; i < num_entries; i++)
   {
-    if (strcmp(dict[i].word, word_to_lookup) == 0)
+    if (strcmp(dict[i].word, word) == 0)
     {
-      printf("%s: %s\n", dict[i].word, dict[i].definition);
-      break;
+      return i;
     }
   }
+  return -1;
+}
 
-  if (i == 100)
+int add_word(struct dictionary *dict, int *num_entries, char *word, char *definition)
+{
+  if (*num_entries >= 100)
   {
-    printf("Word not found in dictionary.\n");
+    return 0;
   }
+  strcpy(dict[*num_entries].word, word);
+  strcpy(dict[*num_entries].definition, definition);
+  (*num_entries)++;
+  return 1;
+}
 
-  return 0;
+int remove_word(struct dictionary *dict, int *num_entries, char *word)
+{
+  int index = lookup_word(dict, *num_entries, word);
+  if (index == -1)
+  {
+    return 0;
+  }
+  for (int i = index; i < (*num_entries - 1); i++)
+  {
+    strcpy(dict[i].word, dict[i + 1].word);
+    strcpy(dict[i].definition, dict[i + 1].definition);
+  }
+  (*num_entries)--;
+  return 1;
 }
