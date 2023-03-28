@@ -1,3 +1,6 @@
+/*Build:
+gcc list.c main.c -o main*/
+
 #include <stdio.h>
 #include "list.h"
 
